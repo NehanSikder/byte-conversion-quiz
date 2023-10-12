@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+input[type=text] {
+  padding: 5px;
+}
+
+.correct {
+  border-bottom: 4px solid #62A342;
+}
+
+.wrong {
+  border-bottom: 4px solid red;
+}
