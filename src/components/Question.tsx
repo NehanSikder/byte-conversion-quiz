@@ -9,13 +9,16 @@ function Question(){
     const [questionValue, setQuestionValue] = useState<number>(0);
     const [questionUnitIndex, setQuestionUnitIndex] = useState<number>(0);
     const [convertToUnitIndex, setConvertToUnitIndex] = useState<number>(1);
-    const [answerClassName, setanswerClassName] = useState<string>("");
+    const [answerClassName, setAnswerClassName] = useState<string>("");
+    const [correctAnswer, setCorrectAnswer] = useState<number>(0);
+    const [showAnswer, setShowAnswer] = useState<boolean>(false);
 
 
     // Answer Variables
     const [answer, setAnswer] = useState<string>("");
 
     const generateQuestion = () => {
+        setAnswer("");
         // Set random question value
         let min: number = 1;
         let max: number = 9000000;
@@ -36,8 +39,7 @@ function Question(){
 
     }
 
-    const verifyAnswer = () => {
-        // calculate correct answer
+    const calculateExpectedAnswer = () => {
         let x: number =  1000 ** Math.abs(convertToUnitIndex - questionUnitIndex)
         let expectedAnswer: number = 0;
         if (questionUnitIndex < convertToUnitIndex){
@@ -45,18 +47,29 @@ function Question(){
         } else {
             expectedAnswer = questionValue * x;
         }
+        return expectedAnswer;
+    }
+
+    const verifyAnswer = () => {
+        // calculate correct answer
+        let expectedAnswer: number = calculateExpectedAnswer();
+        setCorrectAnswer(expectedAnswer);
         if (expectedAnswer === +answer){
             // if answer is valid set input field to green
-            setanswerClassName("correct");
+            setAnswerClassName("correct");
         } else {
             // else set input field to red
-            setanswerClassName("wrong");
-
-
-
+            setAnswerClassName("wrong");
         }
 
     }
+
+    const toggleShowAnswer = () => {
+        let expectedAnswer: number = calculateExpectedAnswer();
+        setCorrectAnswer(expectedAnswer);
+        setShowAnswer(!showAnswer)
+    }
+
     // Generate a new question after the component renders
     useEffect(() => {
         generateQuestion();
@@ -67,9 +80,11 @@ function Question(){
             <h2>Questions</h2>
             <h3>Convert: {questionValue} {units[questionUnitIndex]} to {units[convertToUnitIndex]}</h3>
             <label>Value: </label><input className={answerClassName} type="text" placeholder='10000' onChange={(e) => {setAnswer(e.target.value)}}/> 
+            {showAnswer && <p>Correct answer: {correctAnswer}</p>}
             <br />
             <button onClick={generateQuestion}>Next</button>
             <button onClick={verifyAnswer}>Submit</button>
+            <button onClick={toggleShowAnswer}>Show Answer</button>
         </div>
     )
 
