@@ -19,6 +19,9 @@ function Question(){
 
     const generateQuestion = () => {
         setAnswer("");
+        setShowAnswer(false);
+        setAnswerClassName("");
+        setAnswer("");
         // Set random question value
         let min: number = 1;
         let max: number = 9000000;
@@ -77,14 +80,31 @@ function Question(){
 
     return (
         <div>
-            <h2>Questions</h2>
-            <h3>Convert: {questionValue} {units[questionUnitIndex]} to {units[convertToUnitIndex]}</h3>
-            <label>Value: </label><input className={answerClassName} type="text" placeholder='10000' onChange={(e) => {setAnswer(e.target.value)}}/> 
+            <h2 className='text-2xl'>Questions</h2>
+            <label className="text-xl font-bold">Convert: </label>
+            <h3 className="text-xl">{questionValue} {units[questionUnitIndex]} to {units[convertToUnitIndex]}</h3>
+            <label className="text-xl font-bold">Value: </label>
+            <div className={answerClassName}>
+                <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" placeholder='10000' onChange={(e) => {setAnswer(e.target.value)}}/> 
+            </div>
             {showAnswer && <p>Correct answer: {correctAnswer}</p>}
             <br />
-            <button onClick={generateQuestion}>Next</button>
-            <button onClick={verifyAnswer}>Submit</button>
-            <button onClick={toggleShowAnswer}>Show Answer</button>
+            <div className='space-x-1 space-y-1'>
+                <button className='bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r'
+                        onClick={generateQuestion}>
+                            Next
+                </button>
+                <button 
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border border-green-700 rounded"
+                    onClick={verifyAnswer}>
+                        Submit
+                    </button>
+                <button
+                    className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
+                    onClick={toggleShowAnswer}>
+                        Show Answer
+                </button>
+            </div>
         </div>
     )
 
